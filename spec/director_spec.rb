@@ -74,6 +74,7 @@ describe MoviesController, :type => :controller do
           :rating => 'G', 
           :release_date => '1995-06-19 [00:00:00]', 
           :director => nil) }
+          
   describe 'directors controller' do
     it 'redirection' do
       movie = assigns(:movie)
@@ -105,6 +106,29 @@ describe MoviesController, :type => :controller do
       all = assigns(:movies)
       expect(all).to eq(all.sort! { |x,y| x.title <=> y.title })
     end
+  end
+  
+  describe 'edit controller' do
+    it 'verify' do
+      get :edit, :id => '1'
+      movie = assigns(:movie)
+      expect(movie.id).to eq(1)
+    end  
+  end
+  
+  describe 'destroy controller' do
+    it 'verify' do
+      get :destroy, :id => '1'
+      expect(Movie.find_by_title("Transformers")).to eq(nil)
+    end  
+  end
+  
+  describe 'create controller' do
+    it 'verify' do
+      get :create, :movie => {:title => "Transformers", :release_date => "2007-07-03 [00:00:00]", :rating => "PG-13", :director => "Michael Bay"}
+      movie = assigns(:movie)
+      expect(movie.title).to eq('Transformers')
+    end  
   end
 end
 
